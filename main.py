@@ -1,6 +1,7 @@
 from random import randint
 import praw
 import re
+import config
 
 CITATIONS = [
     "That's it, end of the story", 
@@ -45,11 +46,11 @@ def handle_comment(comment):
 
 def main():
     reddit = praw.Reddit(
-        client_id="hjx9zv-_IgH9PJuUiDFcIg",
-        client_secret="KWjjGe9sMgg_UOPP_UPKxUMxzP3PEg",
-        user_agent="santa_bot (by u/Tartarughina)",
-        password="Rizjob-qampaz-1bynbo",
-        username="santa_bot_1",
+        client_id=config.client_id,
+        client_secret=config.client_secret,
+        user_agent=config.user_agent,
+        password=config.password,
+        username=config.username,
     )
 
     print("Listening for comments and posts on POLIMIxUIC")
