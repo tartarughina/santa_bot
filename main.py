@@ -82,11 +82,10 @@ def handle_comment(comment):
         comment.reply(f"Non lo sapevi ma mi hai nominato `{nominated.group()}`, eccoti una citazione `{get_citation()}`")
 
 
-def main():
-    global TOT_PROBABILITY
+def main(tot):
     # update the total probability at startup
     for x in NAMES:
-        TOT_PROBABILITY = TOT_PROBABILITY + x.get("probability")
+        tot = tot + x.get("probability")
 
     # set the distribution of the available names
     cdf()
