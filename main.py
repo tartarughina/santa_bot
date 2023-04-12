@@ -8,7 +8,14 @@ CITATIONS = [
     "Bless you", 
     "Wendy's triple bacon...", 
     "Crincio",
-    "UIC - University of Indians and Chineses"
+    "UIC - University of Indians and Chineses",
+    "Thanks for playing with us... but no",
+    "Join our coult... Join NECSTLab",
+    "Can we do better?",
+    "Shut",
+    "We're going to do science",
+    "Have a nice weekend even though it's wednedsay",
+    "Awesome"
 ]
 
 TRIGGERS = [
