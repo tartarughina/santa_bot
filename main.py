@@ -1,7 +1,8 @@
-from random import randint
+from random import randint, random
 import praw
 import re
 import config
+import bisect
 
 CITATIONS = [
     "That's it, end of the story", 
@@ -15,7 +16,8 @@ CITATIONS = [
     "Shut",
     "We're going to do science",
     "Have a nice weekend even though it's wednedsay",
-    "Awesome"
+    "Awesome",
+    "Super awesome"
 ]
 
 TRIGGERS = [
@@ -24,17 +26,46 @@ TRIGGERS = [
     "jenna"
 ]
 
+NAMES = [
+    {"name": "Andrea", "probability": 3},
+    {"name": "Pietro", "probability": 1},
+    {"name": "Riccardo", "probability": 1},
+    {"name": "Simone", "probability": 1},
+    {"name": "Marco", "probability": 1},
+    {"name": "Alessandro", "probability": 1},
+    {"name": "Filippo", "probability": 2},
+    {"name": "Claudio", "probability": 1},
+    {"name": "Gabriele", "probability": 1},
+    {"name": "Calliope", "probability": 1},
+    {"name": "Matteo", "probability": 1}
+]
+
+TOT_PROBABILITY = 0
+DISTRIBUTION = []
+
 def get_citation():
     return CITATIONS[randint(0, len(CITATIONS) - 1)]
 
 def santa_egg(sentence) -> bool:
     return re.search("s.*a.*n.*t.*a", sentence)
 
+def cdf():
+    cumsum = 0
+    for w in NAMES:
+        cumsum += w.get("probability")
+        DISTRIBUTION.append(cumsum / TOT_PROBABILITY)
+
+def get_rand_name():    
+    return NAMES[bisect.bisect(DISTRIBUTION, random())].get("name")
+
+def prep_reply():
+    return f"{get_citation()} mh... {get_rand_name()}"
+
 
 def handle_post(post):
     for trigger in TRIGGERS:
         if trigger in post.title.lower():
-            post.reply(f"{get_citation()}")
+            post.reply(prep_reply())
 
 
 def handle_comment(comment):
@@ -42,7 +73,7 @@ def handle_comment(comment):
 
     for trigger in TRIGGERS:
         if trigger in body:
-            comment.reply(f"{get_citation()}")
+            comment.reply(prep_reply())
             return 
 
     nominated = santa_egg(body)
@@ -52,6 +83,13 @@ def handle_comment(comment):
 
 
 def main():
+    # update the total probability at startup
+    for x in NAMES:
+        TOT_PROBABILITY = TOT_PROBABILITY + x.get("probability")
+
+    # set the distribution of the available names
+    cdf()
+
     reddit = praw.Reddit(
         client_id=config.client_id,
         client_secret=config.client_secret,
