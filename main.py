@@ -90,7 +90,7 @@ def handle_comment(comment):
         comment.reply(f"Non lo sapevi ma mi hai nominato `{nominated.group()}`, eccoti una citazione `{get_citation()}`")
 
 
-def main(tot):
+def main():
     # update the total probability at startup
     for x in Config.NAMES:
         Config.TOT_PROBABILITY += x.get("probability")
