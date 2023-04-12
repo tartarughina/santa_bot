@@ -83,6 +83,7 @@ def handle_comment(comment):
 
 
 def main():
+    global TOT_PROBABILITY
     # update the total probability at startup
     for x in NAMES:
         TOT_PROBABILITY = TOT_PROBABILITY + x.get("probability")
@@ -121,4 +122,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(TOT_PROBABILITY)
