@@ -84,6 +84,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# obtain the token 
-# curl -X POST -d 'grant_type=password&username=santa_bot_1&password=Rizjob-qampaz-1bynbo' --user 'hjx9zv-_IgH9PJuUiDFcIg:KWjjGe9sMgg_UOPP_UPKxUMxzP3PEg' https://www.reddit.com/api/v1/access_token
