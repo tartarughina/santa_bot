@@ -4,66 +4,74 @@ import re
 import config
 import bisect
 
-CITATIONS = [
-    "That's it, end of the story", 
-    "Bless you", 
-    "Wendy's triple bacon...", 
-    "Crincio",
-    "UIC - University of Indians and Chineses",
-    "Thanks for playing with us... but no",
-    "Join our coult... Join NECSTLab",
-    "Can we do better?",
-    "Shut",
-    "We're going to do science",
-    "Have a nice weekend even though it's wednedsay",
-    "Awesome",
-    "Super awesome"
-]
+class Config:
+    CITATIONS = [
+        "That's it, end of the story", 
+        "Bless you", 
+        "Wendy's triple bacon...", 
+        "Crincio",
+        "UIC - University of Indians and Chineses",
+        "Thanks for playing with us... but no",
+        "Join our coult... Join NECSTLab",
+        "Can we do better?",
+        "Shut",
+        "We're going to do science",
+        "Have a nice weekend even though it's wednedsay",
+        "Awesome",
+        "Super awesome"
+    ]
 
-TRIGGERS = [
-    "santambrogio",
-    "santa",
-    "jenna"
-]
+    TRIGGERS = [
+        "santambrogio",
+        "santa",
+        "jenna",
+        "uic",
+        "chicago",
+        "letterman",
+        "ds160",
+        "uslenghi",
+        "piergiorgio",
+        "visa",
+    ]
 
-NAMES = [
-    {"name": "Andrea", "probability": 3},
-    {"name": "Pietro", "probability": 1},
-    {"name": "Riccardo", "probability": 1},
-    {"name": "Simone", "probability": 1},
-    {"name": "Marco", "probability": 1},
-    {"name": "Alessandro", "probability": 1},
-    {"name": "Filippo", "probability": 2},
-    {"name": "Claudio", "probability": 1},
-    {"name": "Gabriele", "probability": 1},
-    {"name": "Calliope", "probability": 1},
-    {"name": "Matteo", "probability": 1}
-]
+    NAMES = [
+        {"name": "Andrea", "probability": 3},
+        {"name": "Pietro", "probability": 1},
+        {"name": "Riccardo", "probability": 1},
+        {"name": "Simone", "probability": 1},
+        {"name": "Marco", "probability": 1},
+        {"name": "Alessandro", "probability": 1},
+        {"name": "Filippo", "probability": 2},
+        {"name": "Claudio", "probability": 1},
+        {"name": "Gabriele", "probability": 1},
+        {"name": "Calliope", "probability": 1},
+        {"name": "Matteo", "probability": 1}
+    ]
 
-TOT_PROBABILITY = 0
-DISTRIBUTION = []
+    TOT_PROBABILITY = 0
+    DISTRIBUTION = []
 
 def get_citation():
-    return CITATIONS[randint(0, len(CITATIONS) - 1)]
+    return Config.CITATIONS[randint(0, len(Config.CITATIONS) - 1)]
 
 def santa_egg(sentence) -> bool:
     return re.search("s.*a.*n.*t.*a", sentence)
 
 def cdf():
     cumsum = 0
-    for w in NAMES:
+    for w in Config.NAMES:
         cumsum += w.get("probability")
-        DISTRIBUTION.append(cumsum / TOT_PROBABILITY)
+        Config.DISTRIBUTION.append(cumsum / Config.TOT_PROBABILITY)
 
 def get_rand_name():    
-    return NAMES[bisect.bisect(DISTRIBUTION, random())].get("name")
+    return Config.NAMES[bisect.bisect(Config.DISTRIBUTION, random())].get("name")
 
 def prep_reply():
     return f"{get_citation()} mh... {get_rand_name()}"
 
 
 def handle_post(post):
-    for trigger in TRIGGERS:
+    for trigger in Config.TRIGGERS:
         if trigger in post.title.lower():
             post.reply(prep_reply())
 
@@ -71,7 +79,7 @@ def handle_post(post):
 def handle_comment(comment):
     body = comment.body.lower()
 
-    for trigger in TRIGGERS:
+    for trigger in Config.TRIGGERS:
         if trigger in body:
             comment.reply(prep_reply())
             return 
@@ -84,8 +92,8 @@ def handle_comment(comment):
 
 def main(tot):
     # update the total probability at startup
-    for x in NAMES:
-        tot = tot + x.get("probability")
+    for x in Config.NAMES:
+        Config.TOT_PROBABILITY += x.get("probability")
 
     # set the distribution of the available names
     cdf()
@@ -121,4 +129,4 @@ def main(tot):
 
 
 if __name__ == "__main__":
-    main(TOT_PROBABILITY)
+    main()
