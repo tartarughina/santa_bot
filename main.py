@@ -18,7 +18,8 @@ class Config:
         "We're going to do science",
         "Have a nice weekend even though it's wednedsay",
         "Awesome",
-        "Super awesome"
+        "Super awesome",
+        "At the end of the day"
     ]
 
     TRIGGERS = [
